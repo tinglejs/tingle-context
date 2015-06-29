@@ -50,4 +50,4 @@ var Tingle = {
  * TODO: modernizr env
  */
 
-module.exports = Tingle;
+module.exports = window.Tingle = Tingle;
