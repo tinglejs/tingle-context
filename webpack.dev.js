@@ -26,16 +26,19 @@ module.exports = {
                 'tingle-group-list',
                 'tingle-layer',
                 'tingle-mask',
+                'tingle-number-field',
                 'tingle-on-off',
                 'tingle-on-off-field',
+                'tingle-select-field',
                 'tingle-slide',
+                'tingle-slot',
                 'tingle-style',
                 'tingle-text-field',
                 'tingle-textarea-field',
                 'tingle-tip',
             ];
             components.forEach(function (item) {
-                alias[item] = __dirname + '/tingle/' + item + '/src'
+                alias[item] = [__dirname, 'tingle', item, 'src'].join('/')
             });
             return alias;
         })()
@@ -47,7 +50,9 @@ module.exports = {
         new webpack.DefinePlugin({
           __LOCAL__: true, // 本地环境
           __DEV__: true, // 日常环境
-          __PRO__: false // 生产环境
+          __PRO__: false, // 生产环境
+          __VERSION__: pkg.version,
+          __BUILD_TIME__: new Date()
         })
     ]
 };

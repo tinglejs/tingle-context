@@ -3,7 +3,7 @@ node_modules/
 design/
 .idea/
 docs/
-dist/demo.*
+dist/
 
 # Packages #
 ############
