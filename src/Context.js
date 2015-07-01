@@ -42,9 +42,40 @@ var Tingle = {
         END: END,
         CANCEL: CANCEL
     },
-    noop: function() {}
+    mixin: redo(mixin),
+    noop() {}
 };
 
+// simple mixin
+function mixin(receiver, supplier) {
+    if (Object.keys) {
+        Object.keys(supplier).forEach(function(property) {
+            Object.defineProperty(receiver, property, Object.getOwnPropertyDescriptor(supplier, property));
+        });
+    } else {
+        for (var property in supplier) {
+            if (supplier.hasOwnProperty(property)) {
+                receiver[property] = supplier[property];
+            }
+        }
+    }
+    return receiver;
+}
+
+// 变换两个参数的函数到多个参数
+// var add = function (x, y) { return x+y; }
+// add = redo(add);
+// add(1,2,3) => 6
+function redo(fn) {
+    return function () {
+        var args = arguments;
+        var ret = fn(args[0], args[1]);
+        for (var i=2, l=args.length; i<l; i++) {
+            ret = fn(ret, args[i]);
+        }
+        return ret;
+    }
+}
 
 /**
  * TODO: modernizr env
