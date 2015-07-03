@@ -1,7 +1,7 @@
 var pkg = require('./package.json');
 var webpack = require('webpack');
 module.exports = {
-    // cache: false,
+    cache: false,
     entry: {
         tingle: './src',
         demo: './demo'
