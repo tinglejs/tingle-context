@@ -29,6 +29,7 @@ var CANCEL = supportTouch ? 'touchcancel' : 'mouseup';
  * Top namespace
  */
 var Tingle = {
+    getTID,
     is: {
         pc: isPC,
         mobile: isMobile
@@ -37,13 +38,67 @@ var Tingle = {
         '3d': support3D
     },
     TOUCH: {
-        START: START,
-        MOVE: MOVE,
-        END: END,
-        CANCEL: CANCEL
+        START,
+        MOVE,
+        END,
+        CANCEL
     },
-    noop: function() {}
+    mixin: redo(mixin),
+    noop() {}
 };
+
+
+/**
+ * 对象扩展
+ * @param  {Object} receiver
+ * @param  {Object} supplier
+ * @return {Object} 扩展后的receiver对象
+ */
+function mixin(receiver, supplier) {
+    if (Object.keys) {
+        Object.keys(supplier).forEach(function(property) {
+            Object.defineProperty(receiver, property, Object.getOwnPropertyDescriptor(supplier, property));
+        });
+    } else {
+        for (var property in supplier) {
+            if (supplier.hasOwnProperty(property)) {
+                receiver[property] = supplier[property];
+            }
+        }
+    }
+    return receiver;
+}
+
+
+/**
+ * 变换两个参数的函数到多个参数
+ * @param  {Function} fn 基函数
+ * @return {Function} 变换后的函数
+ * @demo
+ *      function add(x, y) { return x+y; }
+ *      add = redo(add);
+ *      add(1,2,3) => 6
+ */
+function redo(fn) {
+    return function () {
+        var args = arguments;
+        var ret = fn(args[0], args[1]);
+        for (var i=2, l=args.length; i<l; i++) {
+            ret = fn(ret, args[i]);
+        }
+        return ret;
+    }
+}
+
+
+/**
+ * 获取内如的自增长id
+ * @return {Number}
+ */
+var tid = 0;
+function getTID () {
+    return tid++;
+}
 
 
 /**
