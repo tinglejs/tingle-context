@@ -1,8 +1,8 @@
 {
-  "name": "tingle-mask",
-  "version": "0.0.0",
+  "name": "tingle-context",
+  "version": "0.0.1",
   "description": "",
-  "repository": "https://github.com/tinglejs/tingle-mask.git",
+  "repository": "https://github.com/tinglejs/tingle-context.git",
   "files": [
     "dist",
     "README.md"
