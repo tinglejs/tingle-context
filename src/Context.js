@@ -18,6 +18,19 @@ var isPC = !isMobile;
 
 var supportTouch = 'ontouchstart' in window;
 var support3D = ('WebKitCSSMatrix' in window && 'm11' in new WebKitCSSMatrix());
+var supportHalfPx = (function() {
+    var support = false;
+    if (win.devicePixelRatio && devicePixelRatio >= 2) {
+        var testElem = doc.createElement('div');
+        testElem.style.border = '.5px solid transparent';
+        doc.body.appendChild(testElem);
+        if (testElem.offsetHeight == 1) { // 0.5 + 0.5 = 1
+            support = true;
+        }
+        doc.body.removeChild(testElem);
+    }
+    return support;
+})();
 
 // 常量
 var START = supportTouch ? 'touchstart' : 'mousedown';
@@ -35,7 +48,8 @@ var Tingle = {
         mobile: isMobile
     },
     support: {
-        '3d': support3D
+        '3d': support3D,
+        'halfPx': supportHalfPx,
     },
     TOUCH: {
         START,
@@ -99,6 +113,49 @@ var tid = 0;
 function getTID () {
     return tid++;
 }
+
+
+/**
+ * rem base
+ */
+(function(docEl, fontEl) {
+    var dpr = win.devicePixelRatio || 1;
+
+    // 类似小米2webview webkit版本是534及以下，避免闪屏
+    var matches = navigator.userAgent.match(/Android[\S\s]+AppleWebkit\/?(\d{3})/i);
+    if (matches && matches[1] <= 534) {
+        dpr = 1;
+    }
+
+    win.dpr = dpr;
+    docEl.setAttribute('data-dpr', dpr);
+    docEl.firstElementChild.appendChild(fontEl);
+
+    win.addEventListener('resize', function() {
+        // resize时立刻change,pad上刷屏明显
+        setRem();
+    }, false);
+    win.addEventListener('pageshow', function(e) {
+        if (e.persisted) {
+            setRem();
+        }
+    }, false);
+
+    setRem();
+
+    function setRem() {
+        var docWidth = docEl.clientWidth;
+        win.rem = docWidth / 10;
+
+        // ZTE 中兴 ZTE U930_TD/1.0 Linux/2.6.39/Android/4.0Release/3.5.2012 Browser/AppleWebkit534.30
+        // 老机器bug rem计算不是标准=html fontsize
+        if (/ZTE U930_TD/.test(navigator.userAgent)) {
+            win.rem = win.rem * 1.13;
+        }
+
+        fontEl.innerHTML = 'html{font-size:' + win.rem + 'px!important}';
+    }
+})(doc.documentElement, doc.createElement('style'));
 
 
 /**
