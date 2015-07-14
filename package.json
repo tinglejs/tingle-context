@@ -1,10 +1,11 @@
 {
   "name": "tingle-context",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "",
   "repository": "https://github.com/tinglejs/tingle-context.git",
+  "main": "src/index.js",
   "files": [
-    "dist",
+    "src",
     "README.md"
   ],
   "dependencies": {
