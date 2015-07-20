@@ -47,7 +47,6 @@ var Tingle = {
     noop() {}
 };
 
-
 /**
  * 对象扩展
  * @param  {Object} receiver
