@@ -1,4 +1,4 @@
- /**
+/**
  * Tingle Context
  * The environment for tingle's initialization
  * @auther gnosaij
@@ -8,12 +8,13 @@
  */
 require("fastclick").attach(document.body);
 React.initializeTouchEvents(true);
+require("./touchEffect").attach(document.body);
 
 var win = window;
 var doc = document;
 
 var ua = navigator.userAgent;
-var isMobile  = !!ua.match(/mobile/i) || 'orientation' in win;
+var isMobile = !!ua.match(/mobile/i) || 'orientation' in win;
 var isPC = !isMobile;
 
 var supportTouch = 'ontouchstart' in window;
@@ -44,7 +45,8 @@ var Tingle = {
         CANCEL
     },
     mixin: redo(mixin),
-    noop() {}
+    noop() {
+    }
 };
 
 /**
@@ -55,7 +57,7 @@ var Tingle = {
  */
 function mixin(receiver, supplier) {
     if (Object.keys) {
-        Object.keys(supplier).forEach(function(property) {
+        Object.keys(supplier).forEach(function (property) {
             Object.defineProperty(receiver, property, Object.getOwnPropertyDescriptor(supplier, property));
         });
     } else {
@@ -82,7 +84,7 @@ function redo(fn) {
     return function () {
         var args = arguments;
         var ret = fn(args[0], args[1]);
-        for (var i=2, l=args.length; i<l; i++) {
+        for (var i = 2, l = args.length; i < l; i++) {
             ret = fn(ret, args[i]);
         }
         return ret;
@@ -95,7 +97,7 @@ function redo(fn) {
  * @return {Number}
  */
 var tid = 0;
-function getTID () {
+function getTID() {
     return tid++;
 }
 
