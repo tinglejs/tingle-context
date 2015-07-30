@@ -33,6 +33,8 @@ var supportHalfPx = (function() {
     return support;
 })();
 
+var size = 750;
+
 // 常量
 var START = supportTouch ? 'touchstart' : 'mousedown';
 var MOVE = supportTouch ? 'touchmove' : 'mousemove';
@@ -60,7 +62,9 @@ var Tingle = {
     },
     mixin: redo(mixin),
     noop() {
-    }
+    },
+    setSize: setSize,
+    rem: rem
 };
 
 /**
@@ -157,6 +161,19 @@ function getTID() {
         fontEl.innerHTML = 'html{font-size:' + win.rem + 'px!important}';
     }
 })(doc.documentElement, doc.createElement('style'));
+
+/**
+ * px to rem
+ */
+
+function setSize(n) {
+    size = n;
+}
+
+function rem(n) {
+    return (n * 10 / size) + 'rem';
+}
+
 
 
 /**
