@@ -91,7 +91,7 @@ function redo(fn) {
 
 
 /**
- * 获取内如的自增长id
+ * 获取自增长id
  * @return {Number}
  */
 var tid = 0;
