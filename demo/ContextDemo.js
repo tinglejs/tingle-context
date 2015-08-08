@@ -11,6 +11,8 @@ var classnames = require('classnames');
 
 var Context = require('../src/Context');
 
+var rem = Context.makePrivateRem(640);
+
 class Demo extends React.Component {
 
     constructor(props) {
@@ -24,9 +26,9 @@ class Demo extends React.Component {
         var t = this;
         return (<div>
             <div className="tP10">rem demo</div>
-            <div>
+            <div className="tCL">
                 {t.state.opacitys.map(function (opacity) {
-                    return <div style={{
+                    return <div key={Context.getTID()} style={{
                         float: 'left',
                         width: '1rem',
                         height: '1rem',
@@ -34,6 +36,10 @@ class Demo extends React.Component {
                     }}></div>
                 })}
             </div>
+            <div className="tBC5" style={{
+                width: rem(100),
+                height: rem(100)
+            }}/>
         </div>);
     }
 };

@@ -63,9 +63,8 @@ var Tingle = {
     noop(v) {
         return v;
     },
-    setArtBoardWidthForRem,
-    rem: px2rem,
-    px2rem
+    rem,
+    makePrivateRem
 };
 
 /**
@@ -164,18 +163,25 @@ function getTID() {
 })(doc.documentElement, doc.createElement('style'));
 
 
-var artBoardWidthForRem = 750;
-function setArtBoardWidthForRem(width) {
-    artBoardWidthForRem = width;
-}
+var defaultArtBoardWidth = 750;
+
+// function setArtBoardWidthForRem(width) {
+//     artBoardWidthForRem = width;
+// }
 
 /**
  * px to rem
  */
-function px2rem(px) {
-    return (px * 10 / artBoardWidthForRem) + 'rem';
+function rem(px, artBoardWidth) {
+    artBoardWidth = artBoardWidth || defaultArtBoardWidth;
+    return (px * 10 / artBoardWidth) + 'rem';
 }
 
+function makePrivateRem(artBoardWidth) {
+    return function (px) {
+        return rem(px, artBoardWidth);
+    }
+}
 
 /**
  * TODO: modernizr env
