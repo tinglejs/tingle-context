@@ -1,3 +1,12 @@
+/**
+ * Tingle Context
+ * The environment for tingle's initialization
+ * @auther jiushen
+ *
+ * Copyright 2014-2015, Tingle Team, Alinw.
+ * All rights reserved.
+ */
+
 var supportTouch = 'ontouchstart' in window;
 // 常量
 var START = supportTouch ? 'touchstart' : 'mousedown';

@@ -6,6 +6,7 @@
  * Copyright 2014-2015, Tingle Team, Alinw.
  * All rights reserved.
  */
+
 require("fastclick").attach(document.body);
 React.initializeTouchEvents(true);
 require("./touchEffect").attach(document.body);
@@ -33,8 +34,6 @@ var supportHalfPx = (function() {
     return support;
 })();
 
-var size = 750;
-
 // 常量
 var START = supportTouch ? 'touchstart' : 'mousedown';
 var MOVE = supportTouch ? 'touchmove' : 'mousemove';
@@ -61,10 +60,12 @@ var Tingle = {
         CANCEL
     },
     mixin: redo(mixin),
-    noop() {
+    noop(v) {
+        return v;
     },
-    setSize: setSize,
-    rem: rem
+    setArtBoardWidthForRem,
+    rem: px2rem,
+    px2rem
 };
 
 /**
@@ -162,18 +163,18 @@ function getTID() {
     }
 })(doc.documentElement, doc.createElement('style'));
 
+
+var artBoardWidthForRem = 750;
+function setArtBoardWidthForRem(width) {
+    artBoardWidthForRem = width;
+}
+
 /**
  * px to rem
  */
-
-function setSize(n) {
-    size = n;
+function px2rem(px) {
+    return (px * 10 / artBoardWidthForRem) + 'rem';
 }
-
-function rem(n) {
-    return (n * 10 / size) + 'rem';
-}
-
 
 
 /**
