@@ -53,6 +53,7 @@ var Tingle = {
     support: {
         '3d': support3D,
         'halfPx': supportHalfPx,
+        touch: supportTouch
     },
     TOUCH: {
         START,
