@@ -36,10 +36,12 @@ class Demo extends React.Component {
                     }}></div>
                 })}
             </div>
-            <div className="tBC5" style={{
-                width: rem(100),
-                height: rem(100)
-            }}/>
+            <div className="tP10">
+                <div className="tLH2 tFAC tMB10 lineByPx">1px</div>
+                <div className="tLH2 tFAC tMB10 lineByRem">rem(1)</div>
+                <div className="tLH2 tFAC tMB10 lineByRem2">rem(2)</div>
+                <div className="tLH2 tFAC lineByRem3">rem(3)</div>
+            </div>
         </div>);
     }
 };

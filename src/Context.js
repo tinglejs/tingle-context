@@ -10,6 +10,7 @@
 require("fastclick").attach(document.body);
 React.initializeTouchEvents(true);
 require("./touchEffect").attach(document.body);
+var classnames = require('classnames');
 
 var win = window;
 var doc = document;
@@ -186,5 +187,10 @@ function makePrivateRem(artBoardWidth) {
 /**
  * TODO: modernizr env
  */
+
+doc.documentElement.className = classnames(doc.documentElement.className.trim(), {
+    pc: isPC,
+    mobile: isMobile
+});
 
 module.exports = window.Tingle = Tingle;
