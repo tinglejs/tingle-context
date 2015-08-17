@@ -6,14 +6,19 @@
  * Copyright 2014-2015, Tingle Team, Alinw.
  * All rights reserved.
  */
-
-require("fastclick").attach(document.body);
-React.initializeTouchEvents(true);
-require("./touchEffect").attach(document.body);
-var classnames = require('classnames');
-
 var win = window;
 var doc = document;
+
+// 修复点击延迟，减少点透情况的发生
+require("fastclick").attach(doc.body);
+
+// React的移动端touch事件初始化
+React.initializeTouchEvents(true);
+
+// 全局点击态初始化
+require("./touchEffect").attach(doc.body);
+var classnames = require('classnames');
+
 
 var ua = navigator.userAgent;
 var isMobile = !!ua.match(/mobile/i) || 'orientation' in win;
@@ -21,7 +26,7 @@ var isPC = !isMobile;
 
 var supportTouch = 'ontouchstart' in window;
 var support3D = ('WebKitCSSMatrix' in window && 'm11' in new WebKitCSSMatrix());
-var supportHalfPx = (function() {
+var supportHairline = (function() {
     var support = false;
     if (win.devicePixelRatio && devicePixelRatio >= 2) {
         var testElem = doc.createElement('div');
@@ -52,7 +57,7 @@ var Tingle = {
     },
     support: {
         '3d': support3D,
-        'halfPx': supportHalfPx,
+        'hairline': supportHairline,
         touch: supportTouch
     },
     TOUCH: {
@@ -123,7 +128,8 @@ function getTID() {
 
 
 /**
- * rem base
+ * rem system
+ * @TOTO 这个闭包 + rem方法 + makePrivateRem方法的整合
  */
 (function(docEl, fontEl) {
     var dpr = win.devicePixelRatio || 1;
@@ -164,27 +170,6 @@ function getTID() {
     }
 })(doc.documentElement, doc.createElement('style'));
 
-
-/**
- * 0.5px support detection
- */
-
-(function() {
-    if (win.devicePixelRatio && devicePixelRatio >= 2) {
-        var testElem = doc.createElement('div');
-        testElem.style.border = '.5px solid transparent';
-        doc.body.appendChild(testElem);
-        if (testElem.offsetHeight == 1) { // 0.5 + 0.5 = 1
-            doc.documentElement.classList.add('hairlines');
-        }
-        doc.body.removeChild(testElem);
-    }
-})();
-
-/**
- * px to rem
- */
-
 var defaultArtBoardWidth = 750;
 
 function rem(px, artBoardWidth) {
@@ -202,9 +187,13 @@ function makePrivateRem(artBoardWidth) {
  * TODO: modernizr env
  */
 
+/**
+ * 在body上添加环境检测的标识类className
+ */
 doc.documentElement.className = classnames(doc.documentElement.className.trim(), {
     pc: isPC,
-    mobile: isMobile
+    mobile: isMobile,
+    hairline: supportHairline
 });
 
 module.exports = window.Tingle = Tingle;
