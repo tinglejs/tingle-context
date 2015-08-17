@@ -165,15 +165,28 @@ function getTID() {
 })(doc.documentElement, doc.createElement('style'));
 
 
-var defaultArtBoardWidth = 750;
+/**
+ * 0.5px support detection
+ */
 
-// function setArtBoardWidthForRem(width) {
-//     artBoardWidthForRem = width;
-// }
+(function() {
+    if (win.devicePixelRatio && devicePixelRatio >= 2) {
+        var testElem = doc.createElement('div');
+        testElem.style.border = '.5px solid transparent';
+        doc.body.appendChild(testElem);
+        if (testElem.offsetHeight == 1) { // 0.5 + 0.5 = 1
+            doc.documentElement.classList.add('hairlines');
+        }
+        doc.body.removeChild(testElem);
+    }
+})();
 
 /**
  * px to rem
  */
+
+var defaultArtBoardWidth = 750;
+
 function rem(px, artBoardWidth) {
     artBoardWidth = artBoardWidth || defaultArtBoardWidth;
     return (px * 10 / artBoardWidth) + 'rem';
