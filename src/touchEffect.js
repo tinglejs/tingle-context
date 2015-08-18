@@ -47,7 +47,7 @@ class TouchEffect {
             target = target.parentNode;
         }
 
-        if (target.classList && target.classList.contains(this.selector)) {
+        if (target && target.classList && target.classList.contains(this.selector)) {
             target.classList.add(this.activeClass)
         }
     }
@@ -60,7 +60,7 @@ class TouchEffect {
             target = target.parentNode;
         }
 
-        if (target.classList && target.classList.contains(this.selector)) {
+        if (target && target.classList && target.classList.contains(this.selector)) {
             target.classList.remove(this.activeClass)
         }
     }
