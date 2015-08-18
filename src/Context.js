@@ -9,63 +9,25 @@
 var win = window;
 var doc = document;
 
-// 修复点击延迟，减少点透情况的发生
-require("fastclick").attach(doc.body);
-
 // React的移动端touch事件初始化
 React.initializeTouchEvents(true);
 
 // 全局点击态初始化
 require("./touchEffect").attach(doc.body);
+
+// 引入环境检测模块
+var env = require('./env');
+
 var classnames = require('classnames');
 
-
-var ua = navigator.userAgent;
-var isMobile = !!ua.match(/mobile/i) || 'orientation' in win;
-var isPC = !isMobile;
-
-var supportTouch = 'ontouchstart' in window;
-var support3D = ('WebKitCSSMatrix' in window && 'm11' in new WebKitCSSMatrix());
-var supportHairline = (function() {
-    var support = false;
-    if (win.devicePixelRatio && devicePixelRatio >= 2) {
-        var testElem = doc.createElement('div');
-        testElem.style.border = '.5px solid transparent';
-        doc.body.appendChild(testElem);
-        if (testElem.offsetHeight == 1) { // 0.5 + 0.5 = 1
-            support = true;
-        }
-        doc.body.removeChild(testElem);
-    }
-    return support;
-})();
-
-// 常量
-var START = supportTouch ? 'touchstart' : 'mousedown';
-var MOVE = supportTouch ? 'touchmove' : 'mousemove';
-var END = supportTouch ? 'touchend' : 'mouseup';
-var CANCEL = supportTouch ? 'touchcancel' : 'mouseup';
+var {isMobile, isPC} = env.is;
+var {supportTouch, support3D, supportHairline} = env.support;
 
 /**
  * Top namespace
  */
-var Tingle = {
+var Context = {
     getTID,
-    is: {
-        pc: isPC,
-        mobile: isMobile
-    },
-    support: {
-        '3d': support3D,
-        hairline: supportHairline,
-        touch: supportTouch
-    },
-    TOUCH: {
-        START,
-        MOVE,
-        END,
-        CANCEL
-    },
     mixin: redo(mixin),
     noop(v) {
         return v;
@@ -73,6 +35,10 @@ var Tingle = {
     rem,
     makePrivateRem
 };
+
+Context.mixin(Context, env, env.event);
+
+console.dir(Context);
 
 /**
  * 对象扩展
@@ -183,9 +149,6 @@ function makePrivateRem(artBoardWidth) {
     }
 }
 
-/**
- * TODO: modernizr env
- */
 
 /**
  * 在body上添加环境检测的标识类className
@@ -196,4 +159,8 @@ doc.documentElement.className = classnames(doc.documentElement.className.trim(),
     hairline: supportHairline
 });
 
-module.exports = window.Tingle = Tingle;
+module.exports = Context;
+
+/**
+ * TODO: modernizr env
+ */

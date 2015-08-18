@@ -7,12 +7,8 @@
  * All rights reserved.
  */
 
-var supportTouch = 'ontouchstart' in window;
-// 常量
-var START = supportTouch ? 'touchstart' : 'mousedown';
-//var MOVE = supportTouch ? 'touchmove' : 'mousemove';
-var END = supportTouch ? 'touchend' : 'mouseup';
-var CANCEL = supportTouch ? 'touchcancel' : 'mouseup';
+var env = require('./env');
+var {TOUCH_START, TOUCH_END, TOUCH_CANCEL} = env.event;
 
 class TouchEffect {
     /**
@@ -34,9 +30,9 @@ class TouchEffect {
     initEvent() {
         var layer = this.layer;
 
-        layer.addEventListener(START, this.onTouchStart.bind(this), false);
-        layer.addEventListener(END, this.onTouchEnd.bind(this), false);
-        layer.addEventListener(CANCEL, this.onTouchEnd.bind(this), false);
+        layer.addEventListener(TOUCH_START, this.onTouchStart.bind(this), false);
+        layer.addEventListener(TOUCH_END, this.onTouchEnd.bind(this), false);
+        layer.addEventListener(TOUCH_CANCEL, this.onTouchEnd.bind(this), false);
     }
 
     onTouchStart(event) {
@@ -67,10 +63,9 @@ class TouchEffect {
 
     destroy() {
         var layer = this.layer;
-
-        layer.removeEventListener(START, this.onTouchStart.bind(this), false);
-        layer.removeEventListener(END, this.onTouchEnd.bind(this), false);
-        layer.removeEventListener(CANCEL, this.onTouchEnd.bind(this), false);
+        layer.removeEventListener(TOUCH_START, this.onTouchStart.bind(this), false);
+        layer.removeEventListener(TOUCH_END, this.onTouchEnd.bind(this), false);
+        layer.removeEventListener(TOUCH_CANCEL, this.onTouchEnd.bind(this), false);
     }
 }
 

@@ -11,7 +11,7 @@ var classnames = require('classnames');
 
 var Context = require('../src/Context');
 
-var rem = Context.makePrivateRem(640);
+var demoRem = Context.makePrivateRem(640);
 
 class Demo extends React.Component {
 
@@ -36,11 +36,14 @@ class Demo extends React.Component {
                     }}></div>
                 })}
             </div>
-            <div className="tP10">
-                <div className="tLH2 tFAC tMB10 lineByPx">1px的线，当设备支持0.5px时，使用0.5px</div>
-                <div className="tLH2 tFAC tMB10 lineByRem">rem(1)</div>
-                <div className="tLH2 tFAC tMB10 lineByRem2">rem(2)</div>
-                <div className="tLH2 tFAC lineByRem3">rem(3)</div>
+            <div className="tP10 tLH2 tFAC">
+                <div className="tMB10 lineByPx">1px的线，当设备支持0.5px时，使用0.5px</div>
+                <div className="tMB10 lineByRem">demoRem(1)</div>
+                <div className="tMB10 lineByRem2">demoRem(2)</div>
+                <div className="lineByRem3">demoRem(3)</div>
+            </div>
+            <div className="tP10 tLH2 tFAC">
+                <div className="touchDemo tTE">点击效果实现演示</div>
             </div>
         </div>);
     }

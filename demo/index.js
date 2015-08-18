@@ -6,7 +6,6 @@
  * Copyright 2014-2015, Tingle Team, Alinw.
  * All rights reserved.
  */
-
-var Context = require('tingle-context');
+window.FaskClick && FastClick.attach(document.body);
 var Demo = require('./ContextDemo');
 React.render(<Demo/>, document.getElementById('TingleDemo'));
