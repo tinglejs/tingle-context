@@ -20,9 +20,6 @@ var env = require('./env');
 
 var classnames = require('classnames');
 
-// var {isMobile, isPC} = env.is;
-// var {supportTouch, support3D, supportHairline} = env.support;
-
 /**
  * Top namespace
  */
