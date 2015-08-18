@@ -37,7 +37,7 @@ class Demo extends React.Component {
                 })}
             </div>
             <div className="tP10">
-                <div className="tLH2 tFAC tMB10 lineByPx">1px</div>
+                <div className="tLH2 tFAC tMB10 lineByPx">1px的线，当设备支持0.5px时，使用0.5px</div>
                 <div className="tLH2 tFAC tMB10 lineByRem">rem(1)</div>
                 <div className="tLH2 tFAC tMB10 lineByRem2">rem(2)</div>
                 <div className="tLH2 tFAC lineByRem3">rem(3)</div>

@@ -57,7 +57,7 @@ var Tingle = {
     },
     support: {
         '3d': support3D,
-        'hairline': supportHairline,
+        hairline: supportHairline,
         touch: supportTouch
     },
     TOUCH: {

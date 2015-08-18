@@ -1,6 +1,6 @@
 {
   "name": "tingle-context",
-  "version": "0.0.0",
+  "version": "0.0.4",
   "description": "tingle-context component for tingle.",
   "repository": "https://github.com/tinglejs/tingle-context.git",
   "author": {
@@ -13,17 +13,16 @@
     "README.md"
   ],
   "keywords": [
-    "tingle-context,Context",
+    "tingle-context",
     "tingle",
-    "context"
+    "mobile-context",
+    "h5-context"
   ],
   "dependencies": {
     "classnames": "^2.1.2",
     "fastclick": "^1.0.6",
     "react": "^0.13.3",
-    "tingle-context": "latest",
-    "tingle-style": "latest",
-    "zepto": "0.0.4"
+    "tingle-style": "latest"
   },
   "devDependencies": {
     "babel-core": "^5.8.19",
