@@ -20,8 +20,8 @@ var env = require('./env');
 
 var classnames = require('classnames');
 
-var {isMobile, isPC} = env.is;
-var {supportTouch, support3D, supportHairline} = env.support;
+// var {isMobile, isPC} = env.is;
+// var {supportTouch, support3D, supportHairline} = env.support;
 
 /**
  * Top namespace
@@ -154,9 +154,9 @@ function makePrivateRem(artBoardWidth) {
  * 在body上添加环境检测的标识类className
  */
 doc.documentElement.className = classnames(doc.documentElement.className.trim(), {
-    pc: isPC,
-    mobile: isMobile,
-    hairline: supportHairline
+    pc:       env.is.pc,
+    mobile:   env.is.mobile,
+    hairline: env.support.hairline
 });
 
 module.exports = Context;
