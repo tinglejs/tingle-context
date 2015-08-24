@@ -1,13 +1,16 @@
 /**
  * Tingle Context
  * The environment for tingle's initialization
- * @auther gnosaij
+ * @author gnosaij
  *
  * Copyright 2014-2015, Tingle Team, Alinw.
  * All rights reserved.
  */
-var win = window;
-var doc = document;
+const win = window;
+const doc = document;
+// 引入环境检测模块
+const env = require('./env');
+const classnames = require('classnames');
 
 // React的移动端touch事件初始化
 React.initializeTouchEvents(true);
@@ -15,48 +18,26 @@ React.initializeTouchEvents(true);
 // 全局点击态初始化
 require("./touchEffect").attach(doc.body);
 
-// 引入环境检测模块
-var env = require('./env');
-
-var classnames = require('classnames');
-
-/**
- * Top namespace
- */
-var Context = {
-    getTID,
-    mixin: redo(mixin),
-    noop(v) {
-        return v;
-    },
-    rem,
-    makePrivateRem
-};
-
-Context.mixin(Context, env, env.event);
-
-console.dir(Context);
-
 /**
  * 对象扩展
  * @param  {Object} receiver
  * @param  {Object} supplier
  * @return {Object} 扩展后的receiver对象
  */
-function mixin(receiver, supplier) {
+const mixin = (receiver, supplier) => {
     if (Object.keys) {
-        Object.keys(supplier).forEach(function (property) {
+        Object.keys(supplier).forEach((property) => {
             Object.defineProperty(receiver, property, Object.getOwnPropertyDescriptor(supplier, property));
         });
     } else {
-        for (var property in supplier) {
+        for (let property in supplier) {
             if (supplier.hasOwnProperty(property)) {
                 receiver[property] = supplier[property];
             }
         }
     }
     return receiver;
-}
+};
 
 
 /**
@@ -64,41 +45,41 @@ function mixin(receiver, supplier) {
  * @param  {Function} fn 基函数
  * @return {Function} 变换后的函数
  * @demo
- *      function add(x, y) { return x+y; }
+ *      let add = (x, y) => { return x+y; }
  *      add = redo(add);
  *      add(1,2,3) => 6
  */
-function redo(fn) {
-    return function () {
-        var args = arguments;
-        var ret = fn(args[0], args[1]);
-        for (var i = 2, l = args.length; i < l; i++) {
+const redo = (fn) => {
+    return () => {
+        const args = arguments;
+        let ret = fn(args[0], args[1]);
+        for (let i = 2, l = args.length; i < l; i++) {
             ret = fn(ret, args[i]);
         }
         return ret;
     }
-}
+};
 
 
 /**
  * 获取自增长id
  * @return {Number}
  */
-var tid = 0;
-function getTID() {
+let tid = 0;
+let getTID = () => {
     return tid++;
-}
+};
 
 
 /**
  * rem system
- * @TOTO 这个闭包 + rem方法 + makePrivateRem方法的整合
+ * @TODO 这个闭包 + rem方法 + makePrivateRem方法的整合
  */
-(function(docEl, fontEl) {
-    var dpr = win.devicePixelRatio || 1;
+((docEl, fontEl) => {
+    let dpr = win.devicePixelRatio || 1;
 
-    // 类似小米2webview webkit版本是534及以下，避免闪屏
-    var matches = navigator.userAgent.match(/Android[\S\s]+AppleWebkit\/?(\d{3})/i);
+    // 类似小米2 webView webkit版本是534及以下，避免闪屏
+    const matches = navigator.userAgent.match(/Android[\S\s]+AppleWebkit\/?(\d{3})/i);
     if (matches && matches[1] <= 534) {
         dpr = 1;
     }
@@ -107,20 +88,8 @@ function getTID() {
     docEl.setAttribute('data-dpr', dpr);
     docEl.firstElementChild.appendChild(fontEl);
 
-    win.addEventListener('resize', function() {
-        // resize时立刻change,pad上刷屏明显
-        setRem();
-    }, false);
-    win.addEventListener('pageshow', function(e) {
-        if (e.persisted) {
-            setRem();
-        }
-    }, false);
-
-    setRem();
-
-    function setRem() {
-        var docWidth = docEl.clientWidth;
+    let setRem = () => {
+        const docWidth = docEl.clientWidth;
         win.rem = docWidth / 10;
 
         // ZTE 中兴 ZTE U930_TD/1.0 Linux/2.6.39/Android/4.0Release/3.5.2012 Browser/AppleWebkit534.30
@@ -130,29 +99,60 @@ function getTID() {
         }
 
         fontEl.innerHTML = 'html{font-size:' + win.rem + 'px!important}';
-    }
+    };
+
+    win.addEventListener('resize', () => {
+        // resize时立刻change,pad上刷屏明显
+        setRem();
+    }, false);
+    win.addEventListener('pageshow', (e)=> {
+        if (e.persisted) {
+            setRem();
+        }
+    }, false);
+
+
+    setRem();
+
+
 })(doc.documentElement, doc.createElement('style'));
 
-var defaultArtBoardWidth = 750;
+const defaultArtBoardWidth = 750;
 
-function rem(px, artBoardWidth) {
+let rem = (px, artBoardWidth)=> {
     artBoardWidth = artBoardWidth || defaultArtBoardWidth;
     return (px * 10 / artBoardWidth) + 'rem';
-}
+};
 
-function makePrivateRem(artBoardWidth) {
-    return function (px) {
+let makePrivateRem = (artBoardWidth) => {
+    return (px) => {
         return rem(px, artBoardWidth);
     }
-}
+};
+
+
+/**
+ * Top namespace
+ */
+const Context = {
+    getTID,
+    mixin: redo(mixin),
+    noop(v) {
+        return v;
+    },
+    rem,
+    makePrivateRem
+};
+
+Context.mixin(Context, env, env.eventName);
 
 
 /**
  * 在body上添加环境检测的标识类className
  */
 doc.documentElement.className = classnames(doc.documentElement.className.trim(), {
-    pc:       env.is.pc,
-    mobile:   env.is.mobile,
+    pc: env.is.pc,
+    mobile: env.is.mobile,
     hairline: env.support.hairline
 });
 

@@ -1,33 +1,31 @@
 /**
  * Tingle Context
  * The environment for tingle's initialization
- * @auther gnosaij
+ * @author gnosaij
  *
  * Copyright 2014-2015, Tingle Team, Alinw.
  * All rights reserved.
  */
 
-var classnames = require('classnames');
-
-var Context = require('../src/Context');
-
-var demoRem = Context.makePrivateRem(640);
+const classnames = require('classnames');
+const Context = require('../src/Context');
+const demoRem = Context.makePrivateRem(640);
 
 class Demo extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            opacitys: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            opacityArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         }
     }
 
     render() {
-        var t = this;
+        const t = this;
         return (<div>
             <div className="tP10">rem demo</div>
             <div className="tCL">
-                {t.state.opacitys.map(function (opacity) {
+                {t.state.opacityArr.map(function (opacity) {
                     return <div key={Context.getTID()} style={{
                         float: 'left',
                         width: '1rem',
@@ -48,6 +46,6 @@ class Demo extends React.Component {
             </div>
         </div>);
     }
-};
+}
 
 module.exports = Demo;

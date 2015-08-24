@@ -1,16 +1,25 @@
-var win = window;
-var doc = document;
+/**
+ * Tingle Context
+ * The environment for tingle's initialization
+ * @author gnosaij
+ *
+ * Copyright 2014-2015, Tingle Team, Alinw.
+ * All rights reserved.
+ */
 
-var ua = navigator.userAgent;
-var isMobile = !!ua.match(/mobile/i) || 'orientation' in win;
-var isPC = !isMobile;
+const win = window;
+const doc = document;
 
-var supportTouch = 'ontouchstart' in window;
-var support3D = ('WebKitCSSMatrix' in window && 'm11' in new WebKitCSSMatrix());
-var supportHairline = (function() {
+const ua = navigator.userAgent;
+const isMobile = !!ua.match(/mobile/i) || 'orientation' in win;
+const isPC = !isMobile;
+
+const supportTouch = 'ontouchstart' in window;
+const support3D = ('WebKitCSSMatrix' in window && 'm11' in new WebKitCSSMatrix());
+const supportHairline = (() => {
     var support = false;
     if (win.devicePixelRatio && devicePixelRatio >= 2) {
-        var testElem = doc.createElement('div');
+        const testElem = doc.createElement('div');
         testElem.style.border = '.5px solid transparent';
         doc.body.appendChild(testElem);
         if (testElem.offsetHeight == 1) { // 0.5 + 0.5 = 1
@@ -22,12 +31,12 @@ var supportHairline = (function() {
 })();
 
 // 常量
-var START = supportTouch ? 'touchstart' : 'mousedown';
-var MOVE = supportTouch ? 'touchmove' : 'mousemove';
-var END = supportTouch ? 'touchend' : 'mouseup';
-var CANCEL = supportTouch ? 'touchcancel' : 'mouseup';
+const START = supportTouch ? 'touchstart' : 'mousedown';
+const MOVE = supportTouch ? 'touchmove' : 'mousemove';
+const END = supportTouch ? 'touchend' : 'mouseup';
+const CANCEL = supportTouch ? 'touchcancel' : 'mouseup';
 
-var env = {
+const env = {
     is: {
         pc: isPC,
         mobile: isMobile
@@ -37,7 +46,7 @@ var env = {
         hairline: supportHairline,
         touch: supportTouch
     },
-    event: {
+    eventName: {
         TOUCH_START: START,
         TOUCH_MOVE: MOVE,
         TOUCH_END: END,
