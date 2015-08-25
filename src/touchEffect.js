@@ -8,7 +8,7 @@
  */
 
 const env = require('./env');
-const {TOUCH_START, TOUCH_END, TOUCH_CANCEL} = env.eventName;
+const {TOUCH_START, TOUCH_END, TOUCH_CANCEL} = env;
 
 class TouchEffect {
     /**

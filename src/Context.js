@@ -144,7 +144,7 @@ const Context = {
     makePrivateRem
 };
 
-Context.mixin(Context, env, env.eventName);
+Context.mixin(Context, env);
 
 
 /**

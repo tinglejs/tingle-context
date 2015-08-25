@@ -31,12 +31,29 @@ const supportHairline = (() => {
 })();
 
 // 常量
-const START = supportTouch ? 'touchstart' : 'mousedown';
-const MOVE = supportTouch ? 'touchmove' : 'mousemove';
-const END = supportTouch ? 'touchend' : 'mouseup';
-const CANCEL = supportTouch ? 'touchcancel' : 'mouseup';
+const TOUCH_START  = supportTouch ? 'touchstart' : 'mousedown';
+const TOUCH_MOVE   = supportTouch ? 'touchmove' : 'mousemove';
+const TOUCH_END    = supportTouch ? 'touchend' : 'mouseup';
+const TOUCH_CANCEL = supportTouch ? 'touchcancel' : 'mouseup';
 
 const env = {
+    // 是什么环境
+    isPC,
+    isMobile,
+
+    // 是否支持
+    support3D,
+    supportHairline,
+    supportTouch,
+
+    // 事件去差异
+    TOUCH_START,
+    TOUCH_MOVE,
+    TOUCH_END,
+    TOUCH_CANCEL,
+    RESIZE: 'resize',
+
+    // 不建议使用
     is: {
         pc: isPC,
         mobile: isMobile
@@ -46,19 +63,11 @@ const env = {
         hairline: supportHairline,
         touch: supportTouch
     },
-    eventName: {
-        TOUCH_START: START,
-        TOUCH_MOVE: MOVE,
-        TOUCH_END: END,
-        TOUCH_CANCEL: CANCEL,
-        RESIZE: 'resize'
-    },
-    // 不建议使用
     TOUCH: {
-        START,
-        MOVE,
-        END,
-        CANCEL
+        START: TOUCH_START,
+        MOVE: TOUCH_MOVE,
+        END: TOUCH_END,
+        CANCEL: TOUCH_CANCEL
     }
 };
 

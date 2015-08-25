@@ -2,27 +2,23 @@
 
 `tingle`的上下文模块，提供全局性的属性和方法。
 
-### TOUCH
+### 手势事件去差异
 
-根据运行环境确定手势相关的`event`名称
+* TOUCH_START：移动端的值是`touchstart`，PC端的值是`mousedown`
+* TOUCH_MOVE：移动端的值是`touchmove`，PC端的值是`mousemove`
+* TOUCH_END：移动端的值是`touchend`，PC端的值是`mouseup`
+* TOUCH_CANCEL：移动端的值是`touchcancel`，PC端的值是`mouseup`
 
-* START：移动端的值是`touchstart`，PC端的值是`mousedown`
-* MOVE：移动端的值是`touchmove`，PC端的值是`mousemove`
-* END：移动端的值是`touchend`，PC端的值是`mouseup`
-* CANCEL：移动端的值是`touchcancel`，PC端的值是`mouseup`
+### 是什么环境
 
-### is
+* isMobile：boolean，是否是运行在移动端，目前没有区分`pad`，`pad`环境下该值为`true`
+* isPC：boolean，是否是运行在PC端
 
-运行环境
+### 是否支持
 
-* mobile：boolean，是否是运行在移动端，目前没有区分`pad`，`pad`环境下该值为`true`
-* pc：boolean，是否是运行在PC端
-
-### support
-
-* 3d：是否支持`css`硬件加速
-* hairline：是否支持`0.5px`的细线
-* touch：是否支持移动端手势
+* support3D：是否支持`css`硬件加速
+* supportHairline：是否支持`0.5px`的细线
+* supportTouch：是否支持移动端手势
 
 ### getTID
 
@@ -95,6 +91,11 @@ Context.rem(750); // 10rem
 * 添加`set`方法，用于全局配置`tingle`的运行环境。如`Tingle.set('artBoardWidth', 640)`。
 
 ## updates
+
+#### v0.1.0 (2015-08-25)
+
+* `ES6`化。
+* 简化环境判断的层级，如：`Context.is.pc`改为`Context.isPC`。
 
 #### v0.0.4 (2015-08-18)
 
