@@ -30,7 +30,7 @@ class Demo extends React.Component {
                         float: 'left',
                         width: '1rem',
                         height: '1rem',
-                        backgroundColor: 'rgba(0, 0, 0, ' + (opacity/10) + ')'
+                        backgroundColor: 'rgba(0, 0, 0, ' + (opacity / 10) + ')'
                     }}></div>
                 })}
             </div>

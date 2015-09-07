@@ -31,9 +31,9 @@ const supportHairline = (() => {
 })();
 
 // 常量
-const TOUCH_START  = supportTouch ? 'touchstart' : 'mousedown';
-const TOUCH_MOVE   = supportTouch ? 'touchmove' : 'mousemove';
-const TOUCH_END    = supportTouch ? 'touchend' : 'mouseup';
+const TOUCH_START = supportTouch ? 'touchstart' : 'mousedown';
+const TOUCH_MOVE = supportTouch ? 'touchmove' : 'mousemove';
+const TOUCH_END = supportTouch ? 'touchend' : 'mouseup';
 const TOUCH_CANCEL = supportTouch ? 'touchcancel' : 'mouseup';
 
 const env = {
@@ -51,24 +51,7 @@ const env = {
     TOUCH_MOVE,
     TOUCH_END,
     TOUCH_CANCEL,
-    RESIZE: 'resize',
-
-    // 不建议使用
-    is: {
-        pc: isPC,
-        mobile: isMobile
-    },
-    support: {
-        '3d': support3D,
-        hairline: supportHairline,
-        touch: supportTouch
-    },
-    TOUCH: {
-        START: TOUCH_START,
-        MOVE: TOUCH_MOVE,
-        END: TOUCH_END,
-        CANCEL: TOUCH_CANCEL
-    }
+    RESIZE: 'resize'
 };
 
 module.exports = env;
