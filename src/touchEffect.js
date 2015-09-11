@@ -74,9 +74,7 @@ class TouchEffect {
     }
 }
 
-TouchEffect.attach = (layer, options) => {
-    return new TouchEffect(layer, options);
-};
+TouchEffect.attach = (layer, options) => new TouchEffect(layer, options);
 
 module.exports = TouchEffect;
 
