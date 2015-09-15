@@ -1,7 +1,7 @@
 {
   "name": "tingle-context",
   "version": "0.1.2",
-  "description": "tingle-context component for tingle.",
+  "description": "Tingle Context",
   "repository": "https://github.com/tinglejs/tingle-context.git",
   "author": {
     "name": "gnosaij",
