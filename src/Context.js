@@ -1,4 +1,4 @@
- /**
+/**
  * Tingle Context
  * The environment for tingle's initialization
  * @auther gnosaij
@@ -6,18 +6,39 @@
  * Copyright 2014-2015, Tingle Team, Alinw.
  * All rights reserved.
  */
-require("fastclick").attach(document.body);
-React.initializeTouchEvents(true);
-
 var win = window;
 var doc = document;
 
+// 修复点击延迟，减少点透情况的发生
+require("fastclick").attach(doc.body);
+
+// React的移动端touch事件初始化
+React.initializeTouchEvents(true);
+
+// 全局点击态初始化
+require("./touchEffect").attach(doc.body);
+var classnames = require('classnames');
+
+
 var ua = navigator.userAgent;
-var isMobile  = !!ua.match(/mobile/i) || 'orientation' in win;
+var isMobile = !!ua.match(/mobile/i) || 'orientation' in win;
 var isPC = !isMobile;
 
 var supportTouch = 'ontouchstart' in window;
 var support3D = ('WebKitCSSMatrix' in window && 'm11' in new WebKitCSSMatrix());
+var supportHairline = (function() {
+    var support = false;
+    if (win.devicePixelRatio && devicePixelRatio >= 2) {
+        var testElem = doc.createElement('div');
+        testElem.style.border = '.5px solid transparent';
+        doc.body.appendChild(testElem);
+        if (testElem.offsetHeight == 1) { // 0.5 + 0.5 = 1
+            support = true;
+        }
+        doc.body.removeChild(testElem);
+    }
+    return support;
+})();
 
 // 常量
 var START = supportTouch ? 'touchstart' : 'mousedown';
@@ -35,7 +56,9 @@ var Tingle = {
         mobile: isMobile
     },
     support: {
-        '3d': support3D
+        '3d': support3D,
+        'hairline': supportHairline,
+        touch: supportTouch
     },
     TOUCH: {
         START,
@@ -44,9 +67,12 @@ var Tingle = {
         CANCEL
     },
     mixin: redo(mixin),
-    noop() {}
+    noop(v) {
+        return v;
+    },
+    rem,
+    makePrivateRem
 };
-
 
 /**
  * 对象扩展
@@ -56,7 +82,7 @@ var Tingle = {
  */
 function mixin(receiver, supplier) {
     if (Object.keys) {
-        Object.keys(supplier).forEach(function(property) {
+        Object.keys(supplier).forEach(function (property) {
             Object.defineProperty(receiver, property, Object.getOwnPropertyDescriptor(supplier, property));
         });
     } else {
@@ -83,7 +109,7 @@ function redo(fn) {
     return function () {
         var args = arguments;
         var ret = fn(args[0], args[1]);
-        for (var i=2, l=args.length; i<l; i++) {
+        for (var i = 2, l = args.length; i < l; i++) {
             ret = fn(ret, args[i]);
         }
         return ret;
@@ -92,17 +118,82 @@ function redo(fn) {
 
 
 /**
- * 获取内如的自增长id
+ * 获取自增长id
  * @return {Number}
  */
 var tid = 0;
-function getTID () {
+function getTID() {
     return tid++;
 }
 
 
 /**
+ * rem system
+ * @TOTO 这个闭包 + rem方法 + makePrivateRem方法的整合
+ */
+(function(docEl, fontEl) {
+    var dpr = win.devicePixelRatio || 1;
+
+    // 类似小米2webview webkit版本是534及以下，避免闪屏
+    var matches = navigator.userAgent.match(/Android[\S\s]+AppleWebkit\/?(\d{3})/i);
+    if (matches && matches[1] <= 534) {
+        dpr = 1;
+    }
+
+    win.dpr = dpr;
+    docEl.setAttribute('data-dpr', dpr);
+    docEl.firstElementChild.appendChild(fontEl);
+
+    win.addEventListener('resize', function() {
+        // resize时立刻change,pad上刷屏明显
+        setRem();
+    }, false);
+    win.addEventListener('pageshow', function(e) {
+        if (e.persisted) {
+            setRem();
+        }
+    }, false);
+
+    setRem();
+
+    function setRem() {
+        var docWidth = docEl.clientWidth;
+        win.rem = docWidth / 10;
+
+        // ZTE 中兴 ZTE U930_TD/1.0 Linux/2.6.39/Android/4.0Release/3.5.2012 Browser/AppleWebkit534.30
+        // 老机器bug rem计算不是标准=html fontsize
+        if (/ZTE U930_TD/.test(navigator.userAgent)) {
+            win.rem = win.rem * 1.13;
+        }
+
+        fontEl.innerHTML = 'html{font-size:' + win.rem + 'px!important}';
+    }
+})(doc.documentElement, doc.createElement('style'));
+
+var defaultArtBoardWidth = 750;
+
+function rem(px, artBoardWidth) {
+    artBoardWidth = artBoardWidth || defaultArtBoardWidth;
+    return (px * 10 / artBoardWidth) + 'rem';
+}
+
+function makePrivateRem(artBoardWidth) {
+    return function (px) {
+        return rem(px, artBoardWidth);
+    }
+}
+
+/**
  * TODO: modernizr env
  */
+
+/**
+ * 在body上添加环境检测的标识类className
+ */
+doc.documentElement.className = classnames(doc.documentElement.className.trim(), {
+    pc: isPC,
+    mobile: isMobile,
+    hairline: supportHairline
+});
 
 module.exports = window.Tingle = Tingle;
