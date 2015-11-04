@@ -1,18 +1,14 @@
 /**
  * Tingle Context
  * The environment for tingle's initialization
- * @auther jiushen
+ * @author yize
  *
  * Copyright 2014-2015, Tingle Team, Alinw.
  * All rights reserved.
  */
 
-var supportTouch = 'ontouchstart' in window;
-// 常量
-var START = supportTouch ? 'touchstart' : 'mousedown';
-//var MOVE = supportTouch ? 'touchmove' : 'mousemove';
-var END = supportTouch ? 'touchend' : 'mouseup';
-var CANCEL = supportTouch ? 'touchcancel' : 'mouseup';
+const env = require('./env');
+const {TOUCH_START, TOUCH_END, TOUCH_CANCEL} = env;
 
 class TouchEffect {
     /**
@@ -21,62 +17,64 @@ class TouchEffect {
      * @param options
      */
     constructor(layer, options) {
-        this.layer = layer;
-        this.options = options || {
+        const t = this;
+        t.layer = layer;
+        t.options = options || {
             selector: "tTE", // abbr. tTouchEffect
             activeClass: "hover"
         };
-        this.selector = this.options.selector;
-        this.activeClass = this.options.activeClass;
-        this.initEvent()
+        t.selector = t.options.selector;
+        t.activeClass = t.options.activeClass;
+        t.initEvent()
     }
 
     initEvent() {
-        var layer = this.layer;
+        const t = this;
+        const layer = t.layer;
 
-        layer.addEventListener(START, this.onTouchStart.bind(this), false);
-        layer.addEventListener(END, this.onTouchEnd.bind(this), false);
-        layer.addEventListener(CANCEL, this.onTouchEnd.bind(this), false);
+        layer.addEventListener(TOUCH_START, t.onTouchStart.bind(t), false);
+        layer.addEventListener(TOUCH_END, t.onTouchEnd.bind(t), false);
+        layer.addEventListener(TOUCH_CANCEL, t.onTouchEnd.bind(t), false);
     }
 
     onTouchStart(event) {
 
-        var target = event.target;
+        const t = this;
+        let target = event.target;
 
-        while (target && target.classList && !target.classList.contains(this.selector)) {
+        while (target && target.classList && !target.classList.contains(t.selector)) {
             target = target.parentNode;
         }
 
-        if (target.classList && target.classList.contains(this.selector)) {
-            target.classList.add(this.activeClass)
+        if (target && target.classList && target.classList.contains(t.selector)) {
+            target.classList.add(t.activeClass)
         }
     }
 
     onTouchEnd(event) {
 
-        var target = event.target;
+        const t = this;
+        let target = event.target;
 
-        while (target && target.classList && !target.classList.contains(this.selector)) {
+        while (target && target.classList && !target.classList.contains(t.selector)) {
             target = target.parentNode;
         }
 
-        if (target.classList && target.classList.contains(this.selector)) {
-            target.classList.remove(this.activeClass)
+        if (target && target.classList && target.classList.contains(t.selector)) {
+            target.classList.remove(t.activeClass)
         }
     }
 
     destroy() {
-        var layer = this.layer;
-
-        layer.removeEventListener(START, this.onTouchStart.bind(this), false);
-        layer.removeEventListener(END, this.onTouchEnd.bind(this), false);
-        layer.removeEventListener(CANCEL, this.onTouchEnd.bind(this), false);
+        const t = this;
+        const layer = t.layer;
+        layer.removeEventListener(TOUCH_START, t.onTouchStart.bind(t), false);
+        layer.removeEventListener(TOUCH_END, t.onTouchEnd.bind(t), false);
+        layer.removeEventListener(TOUCH_CANCEL, t.onTouchEnd.bind(t), false);
     }
 }
 
-TouchEffect.attach = function (layer, options) {
-    return new TouchEffect(layer, options);
-};
+TouchEffect.attach = (layer, options) => new TouchEffect(layer, options);
 
 module.exports = TouchEffect;
 
