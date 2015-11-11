@@ -19,28 +19,6 @@ React.initializeTouchEvents(true);
 require("./touchEffect").attach(doc.body);
 
 /**
- * 对象扩展
- * @param  {Object} receiver
- * @param  {Object} supplier
- * @return {Object} 扩展后的receiver对象
- */
-let mixin = function (receiver, supplier) {
-    if (Object.keys) {
-        Object.keys(supplier).forEach(function (property) {
-            Object.defineProperty(receiver, property, Object.getOwnPropertyDescriptor(supplier, property))
-        })
-    } else {
-        for (let property in supplier) {
-            if (supplier.hasOwnProperty(property)) {
-                receiver[property] = supplier[property];
-            }
-        }
-    }
-    return receiver;
-};
-
-
-/**
  * 变换两个参数的函数到多个参数
  * @param  {Function} fn 基函数
  * @return {Function} 变换后的函数
@@ -59,6 +37,27 @@ let redo = (fn) => {
         return ret;
     }
 };
+
+/**
+ * 对象扩展
+ * @param  {Object} receiver
+ * @param  {Object} supplier
+ * @return {Object} 扩展后的receiver对象
+ */
+let mixin = redo(function (receiver, supplier) {
+    if (Object.keys) {
+        Object.keys(supplier).forEach(function (property) {
+            Object.defineProperty(receiver, property, Object.getOwnPropertyDescriptor(supplier, property))
+        })
+    } else {
+        for (let property in supplier) {
+            if (supplier.hasOwnProperty(property)) {
+                receiver[property] = supplier[property];
+            }
+        }
+    }
+    return receiver;
+});
 
 /**
  * 获取自增长id
@@ -117,21 +116,44 @@ let rem = (px, artBoardWidth) => (px * 10 / (artBoardWidth || defaultArtBoardWid
 
 let makePrivateRem = (artBoardWidth) => (px) => rem(px, artBoardWidth);
 
+// 全局默认配置
+const defaultGlobalConfig = {
+    svgPath: ''
+};
+
+let runtimeGlobalConfig = {};
+
 /**
  * Top namespace
  */
 // TODO setGlobal/getGlobal
 let Context = {
     getTID,
-    mixin: redo(mixin),
+    mixin,
     noop(v) {
         return v;
     },
     rem,
-    makePrivateRem
+    makePrivateRem,
+    /**
+     * 执行全局配置
+     * @param options
+     */
+    setGlobal(options) {
+        runtimeGlobalConfig = mixin({}, defaultGlobalConfig, options);
+        debugger
+    },
+    /**
+     * 获取全局配置
+     * @param property {String} optional
+     * @returns {*}
+     */
+    getGlobal(property) {
+        return property ? runtimeGlobalConfig[property] : runtimeGlobalConfig;
+    }
 };
 
-Context.mixin(Context, env);
+mixin(Context, env);
 
 /**
  * 在body上添加环境检测的标识类className

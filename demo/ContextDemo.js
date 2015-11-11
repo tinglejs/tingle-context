@@ -8,7 +8,7 @@
  */
 
 const classnames = require('classnames');
-const Context = require('../src/Context');
+const Context = window.Tingle = require('../src/Context');
 const demoRem = Context.makePrivateRem(640);
 
 class Demo extends React.Component {
