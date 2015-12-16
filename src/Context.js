@@ -12,9 +12,6 @@ let doc = document;
 let env = require('./env');
 let classnames = require('classnames');
 
-// React的移动端touch事件初始化
-React.initializeTouchEvents(true);
-
 // 全局点击态初始化
 require("./touchEffect").attach(doc.body);
 
@@ -141,7 +138,6 @@ let Context = {
      */
     setGlobal(options) {
         runtimeGlobalConfig = mixin({}, defaultGlobalConfig, options);
-        debugger
     },
     /**
      * 获取全局配置
@@ -161,7 +157,8 @@ mixin(Context, env);
 doc.documentElement.className = classnames(doc.documentElement.className.trim(), {
     pc: env.isPC,
     mobile: env.isMobile,
-    hairline: env.supportHairline
+    hairline: env.supportHairline,
+    ['dpr' + window.devicePixelRatio]: window.devicePixelRatio > 1
 });
 
 module.exports = Context;

@@ -10,4 +10,4 @@ window.FastClick && FastClick.attach(document.body);
 
 const Demo = require('./ContextDemo');
 
-React.render(<Demo/>, document.getElementById('App'));
+ReactDOM.render(<Demo/>, document.getElementById('App'));

@@ -92,6 +92,15 @@ Context.rem(750); // 10rem
 
 ## updates
 
+#### v1.0.0
+
+* 将react从`0.13.3`升级到`0.14.3`
+* 删除`React.initializeTouchEvents`
+
+#### v0.1.5
+
+* 在`html`上添加`dpr`类值
+
 #### v0.1.0 (2015-08-25)
 
 * `ES6`化。
