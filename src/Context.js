@@ -161,4 +161,5 @@ doc.documentElement.className = classnames(doc.documentElement.className.trim(),
     ['dpr' + window.devicePixelRatio]: window.devicePixelRatio > 1
 });
 
-module.exports = Context;
+// 多次require时保证返回同一个全局对象 保证setGlobal/getGlobal正确执行
+module.exports = win.__TingleContext || (win.__TingleContext = Context);
